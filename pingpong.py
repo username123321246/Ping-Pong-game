@@ -11,34 +11,38 @@ canvas = Canvas(root, width = 500, height = 300, bd = 2, highlightthickness = 3)
 canvas.config(bg = "black")
 canvas.pack()
 
-car = canvas.create_text(300, 20, fill = "white", font = ("bold", 40), text = ":")
 root.update()
 # x1, y1    x2, y2
-canvas.create_line(300, 0, 300, 600, fill = "white")
+canvas.create_line(275, 0, 275, 600, fill = "white")
 
 leftpaddlescore = 0
 rightpaddlescore = 0
 
-score_font = ("Calibri", 10)
-score_text = (canvas.create_text(300, 20, font = score_font, text = "0:0"))
+score_font = ("Calibri", 30, "bold")
+score_text = (canvas.create_text(275, 20, font = score_font, text = f"{leftpaddlescore}:{rightpaddlescore}", fill = "white"))
 # Create circle at the center of the canvas
 x = 300
 y = 250
 r = 50
+s = 250
+canvas.create_oval(x, y, r, s, fill = "white")
 
 class Ball:
     def __init__(self, canvas, paddle1, paddle2, color):
         self.id = canvas.create_oval(10, 10, 30, 30, fill = color)
-        self.canvas.move(self.id, 280, 300)
+        self.canvas = canvas
+        canvas.move(self.id, 280, 300)
+        self.paddle1 = paddle1
+        self.paddle2 = paddle2
 
 # Randomizes ball’s start direction and speed for both X and Y axes.
         start = [-3, -2, -1, 1, 2, 3 ]
-        random.shuffel(start)
-        self.x = start[1]
-        self.y = start[2]
+        random.shuffle(start)
+        self.x = start[0]
+        self.y = start[1]
 
         self.canvas_height = self.canvas.winfo_height() 
-        self.canvas_width = self.winfo_width()   
+        self.canvas_width = self.canvas.winfo_width()   
 
         self.score1 = 0
         self.score2 = 0
@@ -50,9 +54,9 @@ class Ball:
 
         if pos [1] <= 0:      # The top of the ball touches the top of the  game screen which is 0
             self.y = 4
-        if pos [3] >= self.canvas_height:     # The bottom most of the ball touches the bottom of the game screen
+        elif pos [3] >= self.canvas_height:     # The bottom most of the ball touches the bottom of the game screen
             self.y = -4
-        if pos [2] >= self.canvas_width:
+        elif pos [2] >= self.canvas_width:
             self.x = -4
             leftpaddlescore += 1
             canvas.itemconfigure(score_text, text = str(leftpaddlescore) + ":" + str(rightpaddlescore))
@@ -62,25 +66,25 @@ class Ball:
             canvas.itemconfigure(score_text, text = str(leftpaddlescore) + ":" + str(rightpaddlescore))
             
     def hit_paddle1(self, pos):
-        paddle_pos = self.canvas(self.paddle1.id)
+        paddle_pos = self.canvas.coords(self.paddle1.id)
         if pos[1] >= paddle_pos[1] and pos[1] <= paddle_pos[3]:
             if pos[0] >= paddle_pos[0] and pos[0] <= paddle_pos[2]:
                 return True
             
-            return False
+        return False
 
     def hit_paddle2(self, pos):
-        paddle_pos2 = self.canvas(self.paddle2.id)
+        paddle_pos2 = self.canvas.coords(self.paddle2.id)
         if pos[1] >= paddle_pos2[1] and pos[1] <= paddle_pos2[3]:
             if pos[0] >= paddle_pos2[0] and pos[0] <= paddle_pos2[2]:
                 return True
             
-            return False
+        return False
 
 class Paddle1:
     def __init__(self, canvas, color):
         self.canvas = canvas
-        self.id = canvas.create_rectangle(10, 125, 20, 40)
+        self.id = canvas.create_rectangle(10, 125, 20, 40, fill = color)
         self.y = 0
         self.canvas_height = self.canvas.winfo_height()
         self.canvas_width = self.canvas.winfo_width()
@@ -110,7 +114,7 @@ class Paddle1:
 class Paddle2:
     def __init__(self, canvas, color):
         self.canvas = canvas
-        self.id = canvas.create_rectangle(490, 125, 20, 40)
+        self.id = canvas.create_rectangle(490, 125, 500, 200, fill = color)
         self.y = 0
         self.canvas_height = self.canvas.winfo_height()
         self.canvas_width = self.canvas.winfo_width()
@@ -135,8 +139,8 @@ class Paddle2:
     def move_down(self, event):
         self.y = 4
 
-paddle1 = Paddle1(canvas, "orange")
-paddle2 = Paddle2(canvas, "teal")
+paddle1 = Paddle1(canvas, "white")
+paddle2 = Paddle2(canvas, "white")
 ball = Ball(canvas, paddle1, paddle2, "yellow")
 
 
@@ -148,7 +152,7 @@ while True:
     ball.draw()
 
 
-root.mainloop()
+    root.mainloop()
 
 
 
