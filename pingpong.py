@@ -21,17 +21,17 @@ rightpaddlescore = 0
 score_font = ("Calibri", 30, "bold")
 score_text = (canvas.create_text(275, 20, font = score_font, text = f"{leftpaddlescore}:{rightpaddlescore}", fill = "white"))
 # Create circle at the center of the canvas
-x = 300
-y = 250
-r = 50
-s = 250
+x = 150
+y = 125
+r = 175
+s = 125
 canvas.create_oval(x, y, r, s, fill = "white")
 
 class Ball:
     def __init__(self, canvas, paddle1, paddle2, color):
         self.id = canvas.create_oval(10, 10, 30, 30, fill = color)
         self.canvas = canvas
-        canvas.move(self.id, 280, 300)
+        canvas.move(self.id, 250, 150)
         self.paddle1 = paddle1
         self.paddle2 = paddle2
 
@@ -67,16 +67,16 @@ class Ball:
             
     def hit_paddle1(self, pos):
         paddle_pos = self.canvas.coords(self.paddle1.id)
-        if pos[1] >= paddle_pos[1] and pos[1] <= paddle_pos[3]:
-            if pos[0] >= paddle_pos[0] and pos[0] <= paddle_pos[2]:
+        if pos[1] >= paddle_pos[1] and pos[3] <= paddle_pos[3]:
+            if pos[0] >= paddle_pos[2] and pos[2] <= paddle_pos[0]:
                 return True
             
         return False
 
     def hit_paddle2(self, pos):
         paddle_pos2 = self.canvas.coords(self.paddle2.id)
-        if pos[1] >= paddle_pos2[1] and pos[1] <= paddle_pos2[3]:
-            if pos[0] >= paddle_pos2[0] and pos[0] <= paddle_pos2[2]:
+        if pos[1] >= paddle_pos2[1] and pos[3] <= paddle_pos2[3]:
+            if pos[2] >= paddle_pos2[0] and pos[0] <= paddle_pos2[2]:
                 return True
             
         return False
@@ -139,21 +139,23 @@ class Paddle2:
     def move_down(self, event):
         self.y = 4
 
-paddle1 = Paddle1(canvas, "white")
-paddle2 = Paddle2(canvas, "white")
+paddle1 = Paddle1(canvas, "orange")
+paddle2 = Paddle2(canvas, "teal")
 ball = Ball(canvas, paddle1, paddle2, "yellow")
 
 
 
 
-while True:
+def gameloop():
     paddle1.draw()
     paddle2.draw()
     ball.draw()
+    root.after(20, gameloop)
 
-
-    root.mainloop()
-
+ 
+ 
+gameloop()
+root.mainloop()
 
 
 
