@@ -56,8 +56,12 @@ class Ball:
             self.y = 4
         elif pos [3] >= self.canvas_height:     # The bottom most of the ball touches the bottom of the game screen
             self.y = -4
-        elif pos [2] >= self.canvas_width:
+        if self.hit_paddle1(pos):
+            self.x = 4
+        elif self.hit_paddle2(pos):
             self.x = -4
+        elif pos [2] >= self.canvas_width:
+            self.x = -self.x
             leftpaddlescore += 1
             canvas.itemconfigure(score_text, text = str(leftpaddlescore) + ":" + str(rightpaddlescore))
         if pos [0] <= 0:
@@ -67,9 +71,10 @@ class Ball:
             
     def hit_paddle1(self, pos):
         paddle_pos = self.canvas.coords(self.paddle1.id)
-        if pos[1] >= paddle_pos[1] and pos[3] <= paddle_pos[3]:
-            if pos[0] >= paddle_pos[2] and pos[2] <= paddle_pos[0]:
+        if pos[0] >= paddle_pos[2] and pos[2] <= paddle_pos[0]:
+            if pos[3] >= paddle_pos[1] and pos[1] <= paddle_pos[3]:
                 return True
+        
             
         return False
 
@@ -156,6 +161,4 @@ def gameloop():
  
 gameloop()
 root.mainloop()
-
-
 
