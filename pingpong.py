@@ -71,7 +71,7 @@ class Ball:
             
     def hit_paddle1(self, pos):
         paddle_pos = self.canvas.coords(self.paddle1.id)
-        if pos[0] >= paddle_pos[2] and pos[2] <= paddle_pos[0]:
+        if pos[0] <= paddle_pos[2] and pos[2] >= paddle_pos[0]:
             if pos[3] >= paddle_pos[1] and pos[1] <= paddle_pos[3]:
                 return True
         
@@ -89,7 +89,7 @@ class Ball:
 class Paddle1:
     def __init__(self, canvas, color):
         self.canvas = canvas
-        self.id = canvas.create_rectangle(10, 125, 20, 40, fill = color)
+        self.id = canvas.create_rectangle(10, 125, 20, 200, fill = color)
         self.y = 0
         self.canvas_height = self.canvas.winfo_height()
         self.canvas_width = self.canvas.winfo_width()
